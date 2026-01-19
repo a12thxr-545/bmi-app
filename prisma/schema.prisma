@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String      @id @default(cuid())
+  email      String      @unique
+  password   String
+  name       String?
+  role       String      @default("user")
+  targetBMI  Float?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  bmiRecords BMIRecord[]
+}
+
+model BMIRecord {
+  id         String   @id @default(cuid())
+  userId     String
+  weight     Float
+  height     Float
+  bmi        Float
+  category   String
+  recordedAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([recordedAt])
+}
