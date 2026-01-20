@@ -8,26 +8,32 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: 'credentials',
             credentials: {
-                email: { label: 'Email', type: 'email' },
+                identifier: { label: 'Email or Username', type: 'text' },
                 password: { label: 'Password', type: 'password' },
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) {
-                    throw new Error('กรุณากรอกอีเมลและรหัสผ่าน');
+                if (!credentials?.identifier || !credentials?.password) {
+                    throw new Error('Please enter email/username and password');
                 }
 
-                const user = await prisma.user.findUnique({
-                    where: { email: credentials.email },
+                const identifier = credentials.identifier;
+                const isEmail = identifier.includes('@');
+
+                // Find user by email or username
+                const user = await prisma.user.findFirst({
+                    where: isEmail
+                        ? { email: identifier }
+                        : { username: identifier },
                 });
 
                 if (!user) {
-                    throw new Error('ไม่พบผู้ใช้งาน');
+                    throw new Error('Invalid credentials');
                 }
 
                 const isPasswordValid = await compare(credentials.password, user.password);
 
                 if (!isPasswordValid) {
-                    throw new Error('รหัสผ่านไม่ถูกต้อง');
+                    throw new Error('Invalid credentials');
                 }
 
                 return {

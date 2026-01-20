@@ -1,7 +1,6 @@
 'use client';
 
 import {
-    LineChart,
     Line,
     XAxis,
     YAxis,
@@ -25,6 +24,36 @@ interface BMIChartProps {
     showWeight?: boolean;
 }
 
+const CustomTooltip = ({ active, payload, label }: {
+    active?: boolean;
+    payload?: Array<{ value: number; dataKey: string; color: string }>;
+    label?: string;
+}) => {
+    if (active && payload && payload.length) {
+        return (
+            <div
+                style={{
+                    background: 'rgba(30, 41, 59, 0.95)',
+                    border: '1px solid rgba(148, 163, 184, 0.2)',
+                    borderRadius: '8px',
+                    padding: '12px',
+                }}
+            >
+                <p style={{ color: '#F8FAFC', fontWeight: 600, marginBottom: '8px' }}>
+                    {label}
+                </p>
+                {payload.map((entry, index) => (
+                    <p key={index} style={{ color: entry.color, fontSize: '14px' }}>
+                        {entry.dataKey === 'bmi' ? 'BMI' : 'Weight'}: {entry.value}
+                        {entry.dataKey === 'weight' ? ' kg' : ''}
+                    </p>
+                ))}
+            </div>
+        );
+    }
+    return null;
+};
+
 export default function BMIChart({ data, showWeight = false }: BMIChartProps) {
     const filteredData = data.filter((d) => d.bmi !== null);
 
@@ -32,40 +61,10 @@ export default function BMIChart({ data, showWeight = false }: BMIChartProps) {
         return (
             <div className="empty-state">
                 <div className="empty-state-icon">📊</div>
-                <p className="empty-state-description">ยังไม่มีข้อมูลสำหรับช่วงเวลานี้</p>
+                <p className="empty-state-description">No data available for this period</p>
             </div>
         );
     }
-
-    const CustomTooltip = ({ active, payload, label }: {
-        active?: boolean;
-        payload?: Array<{ value: number; dataKey: string; color: string }>;
-        label?: string;
-    }) => {
-        if (active && payload && payload.length) {
-            return (
-                <div
-                    style={{
-                        background: 'rgba(30, 41, 59, 0.95)',
-                        border: '1px solid rgba(148, 163, 184, 0.2)',
-                        borderRadius: '8px',
-                        padding: '12px',
-                    }}
-                >
-                    <p style={{ color: '#F8FAFC', fontWeight: 600, marginBottom: '8px' }}>
-                        {label}
-                    </p>
-                    {payload.map((entry, index) => (
-                        <p key={index} style={{ color: entry.color, fontSize: '14px' }}>
-                            {entry.dataKey === 'bmi' ? 'BMI' : 'น้ำหนัก'}: {entry.value}
-                            {entry.dataKey === 'weight' ? ' kg' : ''}
-                        </p>
-                    ))}
-                </div>
-            );
-        }
-        return null;
-    };
 
     return (
         <div className="chart-container">

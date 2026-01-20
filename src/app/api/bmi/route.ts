@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error('Error fetching BMI records:', error);
         return NextResponse.json(
-            { error: 'เกิดข้อผิดพลาดในการดึงข้อมูล' },
+            { error: 'Error fetching data' },
             { status: 500 }
         );
     }
@@ -51,14 +51,14 @@ export async function POST(request: NextRequest) {
 
         if (!weight || !height) {
             return NextResponse.json(
-                { error: 'กรุณากรอกน้ำหนักและส่วนสูง' },
+                { error: 'Please provide weight and height' },
                 { status: 400 }
             );
         }
 
         if (weight <= 0 || height <= 0) {
             return NextResponse.json(
-                { error: 'น้ำหนักและส่วนสูงต้องมากกว่า 0' },
+                { error: 'Weight and height must be greater than 0' },
                 { status: 400 }
             );
         }
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json(
             {
-                message: 'บันทึกข้อมูลสำเร็จ',
+                message: 'Record saved successfully',
                 record,
                 bmiResult
             },
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error('Error creating BMI record:', error);
         return NextResponse.json(
-            { error: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล' },
+            { error: 'Error saving record' },
             { status: 500 }
         );
     }

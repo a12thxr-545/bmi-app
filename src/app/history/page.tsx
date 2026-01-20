@@ -60,7 +60,7 @@ export default function HistoryPage() {
     const totalPages = Math.ceil(total / limit);
 
     const handleDelete = async (id: string) => {
-        if (!confirm('คุณต้องการลบข้อมูลนี้หรือไม่?')) return;
+        if (!confirm('Are you sure you want to delete this record?')) return;
 
         try {
             const response = await fetch(`/api/bmi/${id}`, {
@@ -77,10 +77,10 @@ export default function HistoryPage() {
 
     const getCategoryBadgeClass = (category: string) => {
         switch (category) {
-            case 'น้ำหนักน้อย': return 'badge-blue';
-            case 'ปกติ': return 'badge-green';
-            case 'น้ำหนักเกิน': return 'badge-yellow';
-            case 'อ้วน': return 'badge-red';
+            case 'Underweight': return 'badge-blue';
+            case 'Normal': return 'badge-green';
+            case 'Overweight': return 'badge-yellow';
+            case 'Obese': return 'badge-red';
             default: return '';
         }
     };
@@ -89,9 +89,9 @@ export default function HistoryPage() {
         <div className="page">
             <div className="container">
                 <div className="page-header">
-                    <h1 className="page-title">📋 ประวัติการบันทึก BMI</h1>
+                    <h1 className="page-title">📋 BMI History</h1>
                     <p className="page-description">
-                        ดูประวัติการบันทึก BMI ทั้งหมดของคุณ
+                        View your entire BMI history
                     </p>
                 </div>
 
@@ -103,12 +103,12 @@ export default function HistoryPage() {
                     ) : records.length === 0 ? (
                         <div className="empty-state">
                             <div className="empty-state-icon">📋</div>
-                            <h3 className="empty-state-title">ยังไม่มีข้อมูล</h3>
+                            <h3 className="empty-state-title">No data available</h3>
                             <p className="empty-state-description">
-                                คุณยังไม่มีบันทึก BMI เริ่มบันทึกครั้งแรกได้เลย
+                                You have no BMI records. Start your first record now.
                             </p>
                             <a href="/bmi" className="btn btn-primary">
-                                บันทึก BMI
+                                Record BMI
                             </a>
                         </div>
                     ) : (
@@ -117,19 +117,19 @@ export default function HistoryPage() {
                                 <table className="table">
                                     <thead>
                                         <tr>
-                                            <th>วันที่/เวลา</th>
-                                            <th>น้ำหนัก (kg)</th>
-                                            <th>ส่วนสูง (cm)</th>
+                                            <th>Date/Time</th>
+                                            <th>Weight (kg)</th>
+                                            <th>Height (cm)</th>
                                             <th>BMI</th>
-                                            <th>สถานะ</th>
-                                            <th>การดำเนินการ</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {records.map((record) => (
                                             <tr key={record.id}>
                                                 <td>
-                                                    {new Date(record.recordedAt).toLocaleDateString('th-TH', {
+                                                    {new Date(record.recordedAt).toLocaleDateString('en-US', {
                                                         year: 'numeric',
                                                         month: 'short',
                                                         day: 'numeric',
@@ -151,7 +151,7 @@ export default function HistoryPage() {
                                                         className="btn btn-ghost btn-sm"
                                                         style={{ color: 'var(--danger)' }}
                                                     >
-                                                        🗑️ ลบ
+                                                        🗑️ Delete
                                                     </button>
                                                 </td>
                                             </tr>
@@ -168,23 +168,23 @@ export default function HistoryPage() {
                                         disabled={page === 1}
                                         className="btn btn-secondary btn-sm"
                                     >
-                                        ← ก่อนหน้า
+                                        ← Previous
                                     </button>
                                     <span className="flex items-center px-4 text-secondary">
-                                        หน้า {page} จาก {totalPages}
+                                        Page {page} of {totalPages}
                                     </span>
                                     <button
                                         onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                                         disabled={page === totalPages}
                                         className="btn btn-secondary btn-sm"
                                     >
-                                        ถัดไป →
+                                        Next →
                                     </button>
                                 </div>
                             )}
 
                             <div className="text-center text-muted text-sm mt-4">
-                                ทั้งหมด {total} รายการ
+                                Total {total} records
                             </div>
                         </>
                     )}

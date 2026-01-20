@@ -9,10 +9,10 @@ export default function Navbar() {
     const { data: session } = useSession();
 
     const navLinks = [
-        { href: '/dashboard', label: 'แดชบอร์ด', icon: '📊' },
-        { href: '/bmi', label: 'บันทึก BMI', icon: '⚖️' },
-        { href: '/history', label: 'ประวัติ', icon: '📋' },
-        { href: '/reports', label: 'รายงาน', icon: '📈' },
+        { href: '/dashboard', label: 'Dashboard', icon: '📊' },
+        { href: '/bmi', label: 'BMI Record', icon: '⚖️' },
+        { href: '/history', label: 'History', icon: '📋' },
+        { href: '/reports', label: 'Reports', icon: '📈' },
     ];
 
     return (
@@ -47,17 +47,17 @@ export default function Navbar() {
                                 onClick={() => signOut({ callbackUrl: '/' })}
                                 className="btn btn-ghost btn-sm"
                             >
-                                ออกจากระบบ
+                                Logout
                             </button>
                         </div>
                     </div>
                 ) : (
                     <div className="navbar-nav">
                         <Link href="/login" className="btn btn-ghost">
-                            เข้าสู่ระบบ
+                            Login
                         </Link>
                         <Link href="/register" className="btn btn-primary">
-                            สมัครสมาชิก
+                            Register
                         </Link>
                     </div>
                 )}

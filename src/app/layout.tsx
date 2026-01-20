@@ -4,9 +4,9 @@ import Providers from "@/components/Providers";
 import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
-  title: "BMI Tracker - ติดตามค่าดัชนีมวลกาย",
-  description: "แอปพลิเคชันติดตามและวิเคราะห์ค่า BMI พร้อมรายงาน MIS ครบถ้วน",
-  keywords: ["BMI", "ดัชนีมวลกาย", "สุขภาพ", "น้ำหนัก", "ส่วนสูง"],
+  title: "BMI Tracker - Track your BMI",
+  description: "Track and analyze your BMI with comprehensive MIS reports",
+  keywords: ["BMI", "Body Mass Index", "Health", "Weight", "Height"],
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="th">
+    <html lang="en">
       <body>
         <Providers>
           <Navbar />

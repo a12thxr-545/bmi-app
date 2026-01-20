@@ -4,31 +4,58 @@ import prisma from '@/lib/prisma';
 
 export async function POST(request: NextRequest) {
     try {
-        const { email, password, name } = await request.json();
+        const { email, username, password, name } = await request.json();
 
         // Validate input
-        if (!email || !password) {
+        if (!email || !username || !password) {
             return NextResponse.json(
-                { error: 'กรุณากรอกอีเมลและรหัสผ่าน' },
+                { error: 'Please provide email, username, and password' },
+                { status: 400 }
+            );
+        }
+
+        // Validate username format
+        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            return NextResponse.json(
+                { error: 'Username can only contain letters, numbers, and underscores' },
+                { status: 400 }
+            );
+        }
+
+        if (username.length < 3 || username.length > 20) {
+            return NextResponse.json(
+                { error: 'Username must be between 3 and 20 characters' },
                 { status: 400 }
             );
         }
 
         if (password.length < 8) {
             return NextResponse.json(
-                { error: 'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร' },
+                { error: 'Password must be at least 8 characters long' },
                 { status: 400 }
             );
         }
 
-        // Check if user already exists
-        const existingUser = await prisma.user.findUnique({
+        // Check if email already exists
+        const existingEmail = await prisma.user.findUnique({
             where: { email },
         });
 
-        if (existingUser) {
+        if (existingEmail) {
             return NextResponse.json(
-                { error: 'อีเมลนี้ถูกใช้งานแล้ว' },
+                { error: 'This email is already registered' },
+                { status: 400 }
+            );
+        }
+
+        // Check if username already exists
+        const existingUsername = await prisma.user.findUnique({
+            where: { username },
+        });
+
+        if (existingUsername) {
+            return NextResponse.json(
+                { error: 'This username is already taken' },
                 { status: 400 }
             );
         }
@@ -40,6 +67,7 @@ export async function POST(request: NextRequest) {
         const user = await prisma.user.create({
             data: {
                 email,
+                username,
                 password: hashedPassword,
                 name: name || null,
             },
@@ -47,16 +75,17 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json(
             {
-                message: 'ลงทะเบียนสำเร็จ',
-                user: { id: user.id, email: user.email, name: user.name }
+                message: 'Registration successful',
+                user: { id: user.id, email: user.email, username: user.username, name: user.name }
             },
             { status: 201 }
         );
     } catch (error) {
         console.error('Registration error:', error);
         return NextResponse.json(
-            { error: 'เกิดข้อผิดพลาดในการลงทะเบียน' },
+            { error: 'Error creating account' },
             { status: 500 }
         );
     }
 }
+

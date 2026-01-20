@@ -7,6 +7,7 @@ import Link from 'next/link';
 export default function RegisterPage() {
     const router = useRouter();
     const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -19,12 +20,22 @@ export default function RegisterPage() {
         setError('');
 
         if (password !== confirmPassword) {
-            setError('รหัสผ่านไม่ตรงกัน');
+            setError('Passwords do not match');
             return;
         }
 
         if (password.length < 8) {
-            setError('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร');
+            setError('Password must be at least 8 characters');
+            return;
+        }
+
+        if (!username || username.length < 3) {
+            setError('Username must be at least 3 characters');
+            return;
+        }
+
+        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            setError('Username can only contain letters, numbers, and underscores');
             return;
         }
 
@@ -34,13 +45,13 @@ export default function RegisterPage() {
             const response = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify({ name, username, email, password }),
             });
 
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || 'เกิดข้อผิดพลาด');
+                throw new Error(data.error || 'An error occurred');
             }
 
             setSuccess(true);
@@ -48,7 +59,7 @@ export default function RegisterPage() {
                 router.push('/login');
             }, 2000);
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'เกิดข้อผิดพลาด');
+            setError(err instanceof Error ? err.message : 'An error occurred');
         } finally {
             setLoading(false);
         }
@@ -63,31 +74,46 @@ export default function RegisterPage() {
                         <path d="M2 17l10 5 10-5" />
                         <path d="M2 12l10 5 10-5" />
                     </svg>
-                    <h1 className="auth-title">สมัครสมาชิก</h1>
-                    <p className="auth-subtitle">สร้างบัญชีใหม่เพื่อเริ่มใช้งาน</p>
+                    <h1 className="auth-title">Sign Up</h1>
+                    <p className="auth-subtitle">Create a new account to get started</p>
                 </div>
 
                 {success ? (
                     <div className="alert alert-success text-center">
-                        ✅ สมัครสมาชิกสำเร็จ! กำลังนำไปหน้าเข้าสู่ระบบ...
+                        ✅ Registration successful! Redirecting to login...
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit}>
                         {error && <div className="alert alert-error mb-4">{error}</div>}
 
                         <div className="form-group">
-                            <label className="form-label">ชื่อ-นามสกุล</label>
+                            <label className="form-label">Full Name</label>
                             <input
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 className="form-input"
-                                placeholder="ชื่อ นามสกุล"
+                                placeholder="Full Name"
                             />
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">อีเมล *</label>
+                            <label className="form-label">Username *</label>
+                            <input
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                className="form-input"
+                                placeholder="username123"
+                                required
+                                minLength={3}
+                                maxLength={20}
+                            />
+                            <small className="text-muted">Letters, numbers, and underscores only</small>
+                        </div>
+
+                        <div className="form-group">
+                            <label className="form-label">Email *</label>
                             <input
                                 type="email"
                                 value={email}
@@ -99,7 +125,7 @@ export default function RegisterPage() {
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">รหัสผ่าน * (อย่างน้อย 8 ตัวอักษร)</label>
+                            <label className="form-label">Password * (at least 8 characters)</label>
                             <input
                                 type="password"
                                 value={password}
@@ -112,7 +138,7 @@ export default function RegisterPage() {
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">ยืนยันรหัสผ่าน *</label>
+                            <label className="form-label">Confirm Password *</label>
                             <input
                                 type="password"
                                 value={confirmPassword}
@@ -132,17 +158,17 @@ export default function RegisterPage() {
                             {loading ? (
                                 <>
                                     <span className="spinner" style={{ width: '1rem', height: '1rem' }}></span>
-                                    กำลังสมัครสมาชิก...
+                                    Registering...
                                 </>
                             ) : (
-                                'สมัครสมาชิก'
+                                'Sign Up'
                             )}
                         </button>
                     </form>
                 )}
 
                 <div className="auth-footer">
-                    มีบัญชีแล้ว? <Link href="/login">เข้าสู่ระบบ</Link>
+                    Already have an account? <Link href="/login">Login</Link>
                 </div>
             </div>
         </div>

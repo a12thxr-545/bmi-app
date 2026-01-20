@@ -3,7 +3,6 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { startOfDay, endOfDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth, startOfYear, endOfYear, subDays, subWeeks, subMonths, subYears, format } from 'date-fns';
-import { th } from 'date-fns/locale';
 
 export async function GET(request: NextRequest) {
     try {
@@ -33,7 +32,7 @@ export async function GET(request: NextRequest) {
                 previousStartDate = startOfDay(subDays(baseDate, 1));
                 previousEndDate = endOfDay(subDays(baseDate, 1));
                 groupBy = 'hour';
-                periodLabel = format(baseDate, 'd MMMM yyyy', { locale: th });
+                periodLabel = format(baseDate, 'd MMMM yyyy');
                 break;
             case 'weekly':
                 startDate = startOfWeek(baseDate, { weekStartsOn: 1 });
@@ -41,7 +40,7 @@ export async function GET(request: NextRequest) {
                 previousStartDate = startOfWeek(subWeeks(baseDate, 1), { weekStartsOn: 1 });
                 previousEndDate = endOfWeek(subWeeks(baseDate, 1), { weekStartsOn: 1 });
                 groupBy = 'day';
-                periodLabel = `${format(startDate, 'd MMM', { locale: th })} - ${format(endDate, 'd MMM yyyy', { locale: th })}`;
+                periodLabel = `${format(startDate, 'd MMM')} - ${format(endDate, 'd MMM yyyy')}`;
                 break;
             case 'monthly':
                 startDate = startOfMonth(baseDate);
@@ -49,7 +48,7 @@ export async function GET(request: NextRequest) {
                 previousStartDate = startOfMonth(subMonths(baseDate, 1));
                 previousEndDate = endOfMonth(subMonths(baseDate, 1));
                 groupBy = 'day';
-                periodLabel = format(baseDate, 'MMMM yyyy', { locale: th });
+                periodLabel = format(baseDate, 'MMMM yyyy');
                 break;
             case 'yearly':
                 startDate = startOfYear(baseDate);
@@ -57,7 +56,7 @@ export async function GET(request: NextRequest) {
                 previousStartDate = startOfYear(subYears(baseDate, 1));
                 previousEndDate = endOfYear(subYears(baseDate, 1));
                 groupBy = 'month';
-                periodLabel = format(baseDate, 'yyyy', { locale: th });
+                periodLabel = format(baseDate, 'yyyy');
                 break;
             default:
                 return NextResponse.json({ error: 'Invalid report type' }, { status: 400 });
@@ -136,7 +135,7 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error('Error generating report:', error);
         return NextResponse.json(
-            { error: 'เกิดข้อผิดพลาดในการสร้างรายงาน' },
+            { error: 'Error generating report' },
             { status: 500 }
         );
     }
@@ -170,7 +169,7 @@ function groupRecordsByPeriod(
 
     // Create all periods
     const periods: Date[] = [];
-    let current = new Date(startDate);
+    const current = new Date(startDate);
 
     while (current <= endDate) {
         periods.push(new Date(current));
@@ -191,7 +190,7 @@ function groupRecordsByPeriod(
     }
 
     for (const period of periods) {
-        const label = format(period, formatMap[groupBy], { locale: th });
+        const label = format(period, formatMap[groupBy]);
         const periodRecords = records.filter(r => {
             const recordDate = new Date(r.recordedAt);
             switch (groupBy) {

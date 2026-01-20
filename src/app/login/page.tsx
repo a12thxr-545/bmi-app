@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export default function LoginPage() {
     const router = useRouter();
-    const [email, setEmail] = useState('');
+    const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -19,7 +19,7 @@ export default function LoginPage() {
 
         try {
             const result = await signIn('credentials', {
-                email,
+                identifier,
                 password,
                 redirect: false,
             });
@@ -31,7 +31,7 @@ export default function LoginPage() {
                 router.refresh();
             }
         } catch {
-            setError('เกิดข้อผิดพลาดในการเข้าสู่ระบบ');
+            setError('An error occurred during login');
         } finally {
             setLoading(false);
         }
@@ -46,27 +46,27 @@ export default function LoginPage() {
                         <path d="M2 17l10 5 10-5" />
                         <path d="M2 12l10 5 10-5" />
                     </svg>
-                    <h1 className="auth-title">เข้าสู่ระบบ</h1>
-                    <p className="auth-subtitle">ยินดีต้อนรับกลับสู่ BMI Tracker</p>
+                    <h1 className="auth-title">Login</h1>
+                    <p className="auth-subtitle">Welcome back to BMI Tracker</p>
                 </div>
 
                 <form onSubmit={handleSubmit}>
                     {error && <div className="alert alert-error mb-4">{error}</div>}
 
                     <div className="form-group">
-                        <label className="form-label">อีเมล</label>
+                        <label className="form-label">Email or Username</label>
                         <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            type="text"
+                            value={identifier}
+                            onChange={(e) => setIdentifier(e.target.value)}
                             className="form-input"
-                            placeholder="your@email.com"
+                            placeholder="your@email.com or username"
                             required
                         />
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">รหัสผ่าน</label>
+                        <label className="form-label">Password</label>
                         <input
                             type="password"
                             value={password}
@@ -86,18 +86,83 @@ export default function LoginPage() {
                         {loading ? (
                             <>
                                 <span className="spinner" style={{ width: '1rem', height: '1rem' }}></span>
-                                กำลังเข้าสู่ระบบ...
+                                Logging in...
                             </>
                         ) : (
-                            'เข้าสู่ระบบ'
+                            'Login'
                         )}
                     </button>
                 </form>
 
                 <div className="auth-footer">
-                    ยังไม่มีบัญชี? <Link href="/register">สมัครสมาชิก</Link>
+                    Don&apos;t have an account? <Link href="/register">Sign Up</Link>
+                </div>
+
+                {/* Student Info Card */}
+                <div style={{
+                    marginTop: '1.5rem',
+                    padding: '1rem',
+                    background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1))',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(99, 102, 241, 0.2)',
+                    textAlign: 'center'
+                }}>
+                    <div style={{
+                        fontSize: '1.25rem',
+                        fontWeight: '700',
+                        color: 'var(--primary)',
+                        marginBottom: '0.75rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem'
+                    }}>
+                        🎓 67162110483-9
+                    </div>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.5rem',
+                        fontSize: '0.9rem'
+                    }}>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '0.5rem',
+                            color: 'var(--text-secondary)'
+                        }}>
+                            <span style={{ opacity: 0.7 }}>👤</span>
+                            <span>Username:</span>
+                            <code style={{
+                                background: 'rgba(99, 102, 241, 0.15)',
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '6px',
+                                fontWeight: '600',
+                                color: 'var(--text)'
+                            }}>judy</code>
+                        </div>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '0.5rem',
+                            color: 'var(--text-secondary)'
+                        }}>
+                            <span style={{ opacity: 0.7 }}>🔑</span>
+                            <span>Password:</span>
+                            <code style={{
+                                background: 'rgba(99, 102, 241, 0.15)',
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '6px',
+                                fontWeight: '600',
+                                color: 'var(--text)'
+                            }}>54567890</code>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     );
 }
+

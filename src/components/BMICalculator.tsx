@@ -36,7 +36,7 @@ export default function BMICalculator() {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || 'เกิดข้อผิดพลาด');
+                throw new Error(data.error || 'An error occurred');
             }
 
             setResult(data.bmiResult);
@@ -46,7 +46,7 @@ export default function BMICalculator() {
                 router.refresh();
             }, 2000);
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'เกิดข้อผิดพลาด');
+            setError(err instanceof Error ? err.message : 'An error occurred');
         } finally {
             setLoading(false);
         }
@@ -54,10 +54,10 @@ export default function BMICalculator() {
 
     const getCategoryBadgeClass = (category: string) => {
         switch (category) {
-            case 'น้ำหนักน้อย': return 'badge-blue';
-            case 'ปกติ': return 'badge-green';
-            case 'น้ำหนักเกิน': return 'badge-yellow';
-            case 'อ้วน': return 'badge-red';
+            case 'Underweight': return 'badge-blue';
+            case 'Normal': return 'badge-green';
+            case 'Overweight': return 'badge-yellow';
+            case 'Obese': return 'badge-red';
             default: return '';
         }
     };
@@ -72,7 +72,7 @@ export default function BMICalculator() {
     return (
         <div className="card">
             <div className="card-header">
-                <h3 className="card-title">⚖️ คำนวณ BMI</h3>
+                <h3 className="card-title">⚖️ Calculate BMI</h3>
             </div>
 
             {result ? (
@@ -90,7 +90,7 @@ export default function BMICalculator() {
                         {result.advice}
                     </p>
                     <button onClick={resetForm} className="btn btn-secondary mt-6">
-                        บันทึกใหม่
+                        Record New
                     </button>
                 </div>
             ) : (
@@ -98,7 +98,7 @@ export default function BMICalculator() {
                     {error && <div className="alert alert-error mb-4">{error}</div>}
 
                     <div className="form-group">
-                        <label className="form-label">น้ำหนัก (กิโลกรัม)</label>
+                        <label className="form-label">Weight (kg)</label>
                         <input
                             type="number"
                             step="0.1"
@@ -107,13 +107,13 @@ export default function BMICalculator() {
                             value={weight}
                             onChange={(e) => setWeight(e.target.value)}
                             className="form-input"
-                            placeholder="เช่น 65.5"
+                            placeholder="e.g. 65.5"
                             required
                         />
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">ส่วนสูง (เซนติเมตร)</label>
+                        <label className="form-label">Height (cm)</label>
                         <input
                             type="number"
                             step="0.1"
@@ -122,7 +122,7 @@ export default function BMICalculator() {
                             value={height}
                             onChange={(e) => setHeight(e.target.value)}
                             className="form-input"
-                            placeholder="เช่น 170"
+                            placeholder="e.g. 170"
                             required
                         />
                     </div>
@@ -136,10 +136,10 @@ export default function BMICalculator() {
                         {loading ? (
                             <>
                                 <span className="spinner" style={{ width: '1rem', height: '1rem' }}></span>
-                                กำลังบันทึก...
+                                Saving...
                             </>
                         ) : (
-                            'บันทึกและคำนวณ BMI'
+                            'Save and Calculate BMI'
                         )}
                     </button>
                 </form>

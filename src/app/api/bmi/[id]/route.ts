@@ -26,14 +26,14 @@ export async function GET(
         });
 
         if (!record) {
-            return NextResponse.json({ error: 'ไม่พบข้อมูล' }, { status: 404 });
+            return NextResponse.json({ error: 'Record not found' }, { status: 404 });
         }
 
         return NextResponse.json(record);
     } catch (error) {
         console.error('Error fetching BMI record:', error);
         return NextResponse.json(
-            { error: 'เกิดข้อผิดพลาดในการดึงข้อมูล' },
+            { error: 'Error fetching record' },
             { status: 500 }
         );
     }
@@ -63,7 +63,7 @@ export async function PUT(
         });
 
         if (!existingRecord) {
-            return NextResponse.json({ error: 'ไม่พบข้อมูล' }, { status: 404 });
+            return NextResponse.json({ error: 'Record not found' }, { status: 404 });
         }
 
         const bmiResult = calculateBMI(weight, height);
@@ -80,14 +80,14 @@ export async function PUT(
         });
 
         return NextResponse.json({
-            message: 'อัปเดตข้อมูลสำเร็จ',
+            message: 'Record updated successfully',
             record,
             bmiResult
         });
     } catch (error) {
         console.error('Error updating BMI record:', error);
         return NextResponse.json(
-            { error: 'เกิดข้อผิดพลาดในการอัปเดตข้อมูล' },
+            { error: 'Error updating record' },
             { status: 500 }
         );
     }
@@ -116,18 +116,18 @@ export async function DELETE(
         });
 
         if (!existingRecord) {
-            return NextResponse.json({ error: 'ไม่พบข้อมูล' }, { status: 404 });
+            return NextResponse.json({ error: 'Record not found' }, { status: 404 });
         }
 
         await prisma.bMIRecord.delete({
             where: { id },
         });
 
-        return NextResponse.json({ message: 'ลบข้อมูลสำเร็จ' });
+        return NextResponse.json({ message: 'Record deleted successfully' });
     } catch (error) {
         console.error('Error deleting BMI record:', error);
         return NextResponse.json(
-            { error: 'เกิดข้อผิดพลาดในการลบข้อมูล' },
+            { error: 'Error deleting record' },
             { status: 500 }
         );
     }

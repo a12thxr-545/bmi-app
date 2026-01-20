@@ -14,9 +14,9 @@ export default async function BMIPage() {
         <div className="page">
             <div className="container" style={{ maxWidth: '500px' }}>
                 <div className="page-header text-center">
-                    <h1 className="page-title">⚖️ บันทึก BMI</h1>
+                    <h1 className="page-title">⚖️ Record BMI</h1>
                     <p className="page-description">
-                        กรอกน้ำหนักและส่วนสูงเพื่อคำนวณค่า BMI ของคุณ
+                        Enter your weight and height to calculate your BMI
                     </p>
                 </div>
 
@@ -25,23 +25,23 @@ export default async function BMIPage() {
                 {/* BMI Reference */}
                 <div className="card mt-6">
                     <div className="card-header">
-                        <h3 className="card-title">📋 เกณฑ์ค่า BMI</h3>
+                        <h3 className="card-title">📋 BMI Categories</h3>
                     </div>
                     <div className="flex flex-col gap-3">
                         <div className="flex items-center justify-between">
-                            <span className="badge badge-blue">น้ำหนักน้อย</span>
+                            <span className="badge badge-blue">Underweight</span>
                             <span className="text-secondary">&lt; 18.5</span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <span className="badge badge-green">ปกติ</span>
+                            <span className="badge badge-green">Normal</span>
                             <span className="text-secondary">18.5 - 24.9</span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <span className="badge badge-yellow">น้ำหนักเกิน</span>
+                            <span className="badge badge-yellow">Overweight</span>
                             <span className="text-secondary">25 - 29.9</span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <span className="badge badge-red">อ้วน</span>
+                            <span className="badge badge-red">Obese</span>
                             <span className="text-secondary">≥ 30</span>
                         </div>
                     </div>
@@ -50,7 +50,7 @@ export default async function BMIPage() {
                 {/* Formula */}
                 <div className="card mt-6">
                     <div className="card-header">
-                        <h3 className="card-title">🧮 สูตรคำนวณ BMI</h3>
+                        <h3 className="card-title">🧮 BMI Formula</h3>
                     </div>
                     <div className="text-center">
                         <code style={{
@@ -61,10 +61,10 @@ export default async function BMIPage() {
                             fontSize: '1.125rem',
                             fontFamily: 'monospace',
                         }}>
-                            BMI = น้ำหนัก (kg) ÷ ส่วนสูง (m)²
+                            BMI = Weight (kg) ÷ Height (m)²
                         </code>
                         <p className="text-muted text-sm mt-3">
-                            ตัวอย่าง: น้ำหนัก 65 kg, ส่วนสูง 170 cm = 65 ÷ (1.7)² = 22.49
+                            Example: Weight 65 kg, Height 170 cm = 65 ÷ (1.7)² = 22.49
                         </p>
                     </div>
                 </div>

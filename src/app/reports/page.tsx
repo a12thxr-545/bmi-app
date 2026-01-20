@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import BMIChart from '@/components/BMIChart';
 import { format, addDays, addWeeks, addMonths, addYears, subDays, subWeeks, subMonths, subYears } from 'date-fns';
-import { th } from 'date-fns/locale';
 
 interface ReportData {
     period: {
@@ -96,10 +95,10 @@ export default function ReportsPage() {
 
     const getCategoryBadgeClass = (category: string) => {
         switch (category) {
-            case 'น้ำหนักน้อย': return 'badge-blue';
-            case 'ปกติ': return 'badge-green';
-            case 'น้ำหนักเกิน': return 'badge-yellow';
-            case 'อ้วน': return 'badge-red';
+            case 'Underweight': return 'badge-blue';
+            case 'Normal': return 'badge-green';
+            case 'Overweight': return 'badge-yellow';
+            case 'Obese': return 'badge-red';
             default: return '';
         }
     };
@@ -108,9 +107,9 @@ export default function ReportsPage() {
         <div className="page">
             <div className="container">
                 <div className="page-header">
-                    <h1 className="page-title">📊 รายงาน MIS</h1>
+                    <h1 className="page-title">📊 MIS Reports</h1>
                     <p className="page-description">
-                        วิเคราะห์ข้อมูล BMI ของคุณในรูปแบบต่างๆ
+                        Analyze your BMI data in various formats
                     </p>
                 </div>
 
@@ -122,10 +121,10 @@ export default function ReportsPage() {
                             onClick={() => setReportType(type)}
                             className={`tab ${reportType === type ? 'active' : ''}`}
                         >
-                            {type === 'daily' && '📅 รายวัน'}
-                            {type === 'weekly' && '📆 รายสัปดาห์'}
-                            {type === 'monthly' && '🗓️ รายเดือน'}
-                            {type === 'yearly' && '📊 รายปี'}
+                            {type === 'daily' && '📅 Daily'}
+                            {type === 'weekly' && '📆 Weekly'}
+                            {type === 'monthly' && '🗓️ Monthly'}
+                            {type === 'yearly' && '📊 Yearly'}
                         </button>
                     ))}
                 </div>
@@ -138,7 +137,7 @@ export default function ReportsPage() {
                         </button>
                         <div className="text-center">
                             <div className="font-semibold text-lg">
-                                {reportData?.period.label || format(selectedDate, 'd MMMM yyyy', { locale: th })}
+                                {reportData?.period.label || format(selectedDate, 'd MMMM yyyy')}
                             </div>
                         </div>
                         <button onClick={() => navigatePeriod('next')} className="btn btn-secondary btn-icon">
@@ -156,13 +155,13 @@ export default function ReportsPage() {
                         {/* Statistics Cards */}
                         <div className="grid grid-4 mb-6">
                             <div className="card stat-card">
-                                <div className="stat-label">จำนวนบันทึก</div>
+                                <div className="stat-label">Record Count</div>
                                 <div className="stat-value">{reportData.statistics.current.count}</div>
-                                <span className="text-muted text-sm">รายการ</span>
+                                <span className="text-muted text-sm">records</span>
                             </div>
 
                             <div className="card stat-card">
-                                <div className="stat-label">BMI เฉลี่ย</div>
+                                <div className="stat-label">Average BMI</div>
                                 <div className="stat-value">
                                     {reportData.statistics.current.avg || '-'}
                                 </div>
@@ -174,14 +173,14 @@ export default function ReportsPage() {
                             </div>
 
                             <div className="card stat-card">
-                                <div className="stat-label">BMI ต่ำสุด</div>
+                                <div className="stat-label">Min BMI</div>
                                 <div className="stat-value" style={{ color: '#22C55E' }}>
                                     {reportData.statistics.current.min || '-'}
                                 </div>
                             </div>
 
                             <div className="card stat-card">
-                                <div className="stat-label">BMI สูงสุด</div>
+                                <div className="stat-label">Max BMI</div>
                                 <div className="stat-value" style={{ color: '#EF4444' }}>
                                     {reportData.statistics.current.max || '-'}
                                 </div>
@@ -191,7 +190,7 @@ export default function ReportsPage() {
                         {/* Chart */}
                         <div className="card mb-6">
                             <div className="card-header">
-                                <h3 className="card-title">📈 กราฟแนวโน้ม BMI</h3>
+                                <h3 className="card-title">📈 BMI Trend Chart</h3>
                             </div>
                             <BMIChart data={reportData.chartData} showWeight />
                         </div>
@@ -201,7 +200,7 @@ export default function ReportsPage() {
                             {/* Category Distribution */}
                             <div className="card">
                                 <div className="card-header">
-                                    <h3 className="card-title">📊 การกระจายตัว</h3>
+                                    <h3 className="card-title">📊 Distribution</h3>
                                 </div>
                                 {Object.keys(reportData.categoryDistribution).length > 0 ? (
                                     <div className="flex flex-col gap-3">
@@ -219,35 +218,35 @@ export default function ReportsPage() {
                                                             borderRadius: '4px',
                                                         }}
                                                     />
-                                                    <span className="text-secondary">{count} รายการ</span>
+                                                    <span className="text-secondary">{count} records</span>
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
                                 ) : (
-                                    <p className="text-muted text-center">ไม่มีข้อมูล</p>
+                                    <p className="text-muted text-center">No data available</p>
                                 )}
                             </div>
 
                             {/* Period Comparison */}
                             <div className="card">
                                 <div className="card-header">
-                                    <h3 className="card-title">📉 เปรียบเทียบกับช่วงก่อนหน้า</h3>
+                                    <h3 className="card-title">📉 Comparison with Previous Period</h3>
                                 </div>
                                 <div className="grid grid-2 gap-4">
                                     <div className="text-center">
-                                        <div className="text-muted text-sm mb-2">ช่วงปัจจุบัน</div>
+                                        <div className="text-muted text-sm mb-2">Current Period</div>
                                         <div className="stat-value text-lg">
                                             {reportData.statistics.current.avg || '-'}
                                         </div>
-                                        <div className="text-muted text-sm">{reportData.statistics.current.count} รายการ</div>
+                                        <div className="text-muted text-sm">{reportData.statistics.current.count} records</div>
                                     </div>
                                     <div className="text-center">
-                                        <div className="text-muted text-sm mb-2">ช่วงก่อนหน้า</div>
+                                        <div className="text-muted text-sm mb-2">Previous Period</div>
                                         <div className="stat-value text-lg">
                                             {reportData.statistics.previous.avg || '-'}
                                         </div>
-                                        <div className="text-muted text-sm">{reportData.statistics.previous.count} รายการ</div>
+                                        <div className="text-muted text-sm">{reportData.statistics.previous.count} records</div>
                                     </div>
                                 </div>
                                 {reportData.statistics.change !== 0 && (
@@ -264,24 +263,24 @@ export default function ReportsPage() {
                         {reportData.records.length > 0 && (
                             <div className="card">
                                 <div className="card-header">
-                                    <h3 className="card-title">📋 รายละเอียดข้อมูล</h3>
+                                    <h3 className="card-title">📋 Detailed Data</h3>
                                 </div>
                                 <div className="table-container">
                                     <table className="table">
                                         <thead>
                                             <tr>
-                                                <th>วันที่/เวลา</th>
-                                                <th>น้ำหนัก (kg)</th>
-                                                <th>ส่วนสูง (cm)</th>
+                                                <th>Date/Time</th>
+                                                <th>Weight (kg)</th>
+                                                <th>Height (cm)</th>
                                                 <th>BMI</th>
-                                                <th>สถานะ</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {reportData.records.map((record) => (
                                                 <tr key={record.id}>
                                                     <td>
-                                                        {new Date(record.recordedAt).toLocaleDateString('th-TH', {
+                                                        {new Date(record.recordedAt).toLocaleDateString('en-US', {
                                                             year: 'numeric',
                                                             month: 'short',
                                                             day: 'numeric',
@@ -309,9 +308,9 @@ export default function ReportsPage() {
                     <div className="card">
                         <div className="empty-state">
                             <div className="empty-state-icon">📊</div>
-                            <h3 className="empty-state-title">ไม่มีข้อมูล</h3>
+                            <h3 className="empty-state-title">No Data</h3>
                             <p className="empty-state-description">
-                                ไม่พบข้อมูลสำหรับช่วงเวลานี้
+                                No data found for this period
                             </p>
                         </div>
                     </div>

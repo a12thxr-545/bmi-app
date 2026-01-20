@@ -2,24 +2,24 @@
 ## BMI Tracker Web Application
 
 **Version:** 1.0  
-**Date:** 19 มกราคม 2569  
+**Date:** January 19, 2026  
 **Project Name:** BMI Tracker
 
 ---
 
-## 1. บทนำ (Introduction)
+## 1. Introduction
 
-### 1.1 วัตถุประสงค์ (Purpose)
-เอกสารนี้เป็นข้อกำหนดความต้องการซอฟต์แวร์ (SRS) สำหรับระบบ BMI Tracker Web Application ซึ่งเป็นแอปพลิเคชันสำหรับติดตามและวิเคราะห์ค่าดัชนีมวลกาย (Body Mass Index) ของผู้ใช้งานหลายคน พร้อมรายงาน MIS ที่ครอบคลุม
+### 1.1 Purpose
+This document is the Software Requirements Specification (SRS) for the BMI Tracker Web Application system. It is an application for tracking and analyzing Body Mass Index (BMI) for multiple users, complete with comprehensive MIS reports.
 
-### 1.2 ขอบเขต (Scope)
-- ระบบจัดการผู้ใช้งานหลายคน (Multi-user System)
-- ระบบ Login/Register
-- บันทึกและคำนวณค่า BMI
-- รายงาน MIS ย้อนหลัง (รายวัน, รายสัปดาห์, รายเดือน, รายปี)
-- Dashboard แสดงผลข้อมูลเชิงสถิติ
+### 1.2 Scope
+- Multi-user System
+- Login/Register System
+- Record and Calculate BMI
+- Historical MIS Reports (Daily, Weekly, Monthly, Yearly)
+- Dashboard displaying statistical data
 
-### 1.3 เทคโนโลยีที่ใช้ (Technology Stack)
+### 1.3 Technology Stack
 - **Frontend:** Next.js (Latest Version) + React
 - **Backend:** Next.js API Routes
 - **Database:** SQLite with Prisma ORM
@@ -29,116 +29,116 @@
 
 ---
 
-## 2. คำอธิบายโดยรวม (Overall Description)
+## 2. Overall Description
 
-### 2.1 มุมมองผลิตภัณฑ์ (Product Perspective)
-BMI Tracker เป็นเว็บแอปพลิเคชันแบบ standalone ที่ผู้ใช้สามารถ:
-- ลงทะเบียนและเข้าสู่ระบบ
-- บันทึกข้อมูลน้ำหนักและส่วนสูง
-- ดูประวัติ BMI ย้อนหลัง
-- เข้าถึงรายงานเชิงวิเคราะห์
+### 2.1 Product Perspective
+BMI Tracker is a standalone web application where users can:
+- Register and Login
+- Record weight and height data
+- View historical BMI records
+- Access analytical reports
 
-### 2.2 คลาสผู้ใช้งาน (User Classes)
+### 2.2 User Classes
 
-| ประเภทผู้ใช้ | คำอธิบาย | สิทธิ์การเข้าถึง |
-|-------------|---------|----------------|
-| **User** | ผู้ใช้งานทั่วไป | บันทึก BMI, ดูรายงานส่วนตัว |
-| **Admin** | ผู้ดูแลระบบ | จัดการผู้ใช้, ดูรายงานรวม |
+| User Type | Description | Access Rights |
+|-----------|-------------|---------------|
+| **User** | General User | Record BMI, View personal reports |
+| **Admin** | Administrator | Manage users, View aggregate reports |
 
-### 2.3 สภาพแวดล้อมการทำงาน (Operating Environment)
+### 2.3 Operating Environment
 - Web Browser: Chrome, Firefox, Safari, Edge (Latest versions)
-- Responsive Design: รองรับ Desktop, Tablet, Mobile
+- Responsive Design: Supports Desktop, Tablet, Mobile
 - Server: Node.js Runtime
 
 ---
 
-## 3. ข้อกำหนดเฉพาะ (Specific Requirements)
+## 3. Specific Requirements
 
-### 3.1 ข้อกำหนดด้านฟังก์ชัน (Functional Requirements)
+### 3.1 Functional Requirements
 
-#### 3.1.1 ระบบ Authentication (FR-AUTH)
+#### 3.1.1 Authentication System (FR-AUTH)
 
-| ID | ความต้องการ | ลำดับความสำคัญ |
-|----|------------|---------------|
-| FR-AUTH-001 | ผู้ใช้สามารถลงทะเบียนด้วย Email และ Password | สูง |
-| FR-AUTH-002 | ผู้ใช้สามารถเข้าสู่ระบบด้วย Email และ Password | สูง |
-| FR-AUTH-003 | ระบบต้องตรวจสอบความถูกต้องของ Email | สูง |
-| FR-AUTH-004 | Password ต้องมีความยาวอย่างน้อย 8 ตัวอักษร | สูง |
-| FR-AUTH-005 | ระบบต้องเข้ารหัส Password ก่อนจัดเก็บ | สูง |
-| FR-AUTH-006 | ผู้ใช้สามารถ Logout ได้ | สูง |
-| FR-AUTH-007 | ระบบต้องจัดการ Session อย่างปลอดภัย | สูง |
+| ID | Requirement | Priority |
+|----|-------------|----------|
+| FR-AUTH-001 | Users can register with Email and Password | High |
+| FR-AUTH-002 | Users can login with Email and Password | High |
+| FR-AUTH-003 | System must validate Email format | High |
+| FR-AUTH-004 | Password must be at least 8 characters long | High |
+| FR-AUTH-005 | System must encrypt Password before storage | High |
+| FR-AUTH-006 | Users can Logout | High |
+| FR-AUTH-007 | System must manage Sessions securely | High |
 
-#### 3.1.2 ระบบจัดการโปรไฟล์ (FR-PROFILE)
+#### 3.1.2 Profile Management System (FR-PROFILE)
 
-| ID | ความต้องการ | ลำดับความสำคัญ |
-|----|------------|---------------|
-| FR-PROFILE-001 | ผู้ใช้สามารถดูข้อมูลโปรไฟล์ของตนเอง | สูง |
-| FR-PROFILE-002 | ผู้ใช้สามารถแก้ไขชื่อ-นามสกุล | กลาง |
-| FR-PROFILE-003 | ผู้ใช้สามารถเปลี่ยน Password | กลาง |
-| FR-PROFILE-004 | ผู้ใช้สามารถกำหนดเป้าหมาย BMI | กลาง |
+| ID | Requirement | Priority |
+|----|-------------|----------|
+| FR-PROFILE-001 | Users can view their own profile | High |
+| FR-PROFILE-002 | Users can edit their Full Name | Medium |
+| FR-PROFILE-003 | Users can change Password | Medium |
+| FR-PROFILE-004 | Users can set BMI goals | Medium |
 
-#### 3.1.3 ระบบบันทึก BMI (FR-BMI)
+#### 3.1.3 BMI Recording System (FR-BMI)
 
-| ID | ความต้องการ | ลำดับความสำคัญ |
-|----|------------|---------------|
-| FR-BMI-001 | ผู้ใช้สามารถบันทึกน้ำหนัก (kg) และส่วนสูง (cm) | สูง |
-| FR-BMI-002 | ระบบต้องคำนวณ BMI อัตโนมัติ (น้ำหนัก / ส่วนสูง²) | สูง |
-| FR-BMI-003 | ระบบต้องแสดงหมวดหมู่ BMI (ผอม/ปกติ/น้ำหนักเกิน/อ้วน) | สูง |
-| FR-BMI-004 | ผู้ใช้สามารถบันทึกหลายครั้งต่อวัน | กลาง |
-| FR-BMI-005 | ระบบต้องบันทึกวันที่และเวลาอัตโนมัติ | สูง |
-| FR-BMI-006 | ผู้ใช้สามารถแก้ไขข้อมูล BMI ที่บันทึก | กลาง |
-| FR-BMI-007 | ผู้ใช้สามารถลบข้อมูล BMI ที่บันทึก | กลาง |
+| ID | Requirement | Priority |
+|----|-------------|----------|
+| FR-BMI-001 | Users can record weight (kg) and height (cm) | High |
+| FR-BMI-002 | System must calculate BMI automatically (weight / height²) | High |
+| FR-BMI-003 | System must display BMI category (Underweight/Normal/Overweight/Obese) | High |
+| FR-BMI-004 | Users can record multiple times per day | Medium |
+| FR-BMI-005 | System must record date and time automatically | High |
+| FR-BMI-006 | Users can edit recorded BMI data | Medium |
+| FR-BMI-007 | Users can delete recorded BMI data | Medium |
 
-#### 3.1.4 ระบบรายงาน MIS (FR-REPORT)
+#### 3.1.4 MIS Report System (FR-REPORT)
 
-| ID | ความต้องการ | ลำดับความสำคัญ |
-|----|------------|---------------|
-| FR-REPORT-001 | แสดงรายงาน BMI รายวัน | สูง |
-| FR-REPORT-002 | แสดงรายงาน BMI รายสัปดาห์ | สูง |
-| FR-REPORT-003 | แสดงรายงาน BMI รายเดือน | สูง |
-| FR-REPORT-004 | แสดงรายงาน BMI รายปี | สูง |
-| FR-REPORT-005 | รายงานต้องแสดงกราฟแนวโน้ม BMI | สูง |
-| FR-REPORT-006 | รายงานต้องแสดงค่าสถิติ (สูงสุด/ต่ำสุด/เฉลี่ย) | สูง |
-| FR-REPORT-007 | รายงานต้องเปรียบเทียบกับเป้าหมาย | กลาง |
-| FR-REPORT-008 | สามารถ Export รายงานเป็น PDF/CSV | ต่ำ |
+| ID | Requirement | Priority |
+|----|-------------|----------|
+| FR-REPORT-001 | Display Daily BMI Report | High |
+| FR-REPORT-002 | Display Weekly BMI Report | High |
+| FR-REPORT-003 | Display Monthly BMI Report | High |
+| FR-REPORT-004 | Display Yearly BMI Report | High |
+| FR-REPORT-005 | Report must display BMI trend graphs | High |
+| FR-REPORT-006 | Report must display statistics (Max/Min/Average) | High |
+| FR-REPORT-007 | Report must compare with goals | Medium |
+| FR-REPORT-008 | Ability to Export reports as PDF/CSV | Low |
 
 #### 3.1.5 Dashboard (FR-DASHBOARD)
 
-| ID | ความต้องการ | ลำดับความสำคัญ |
-|----|------------|---------------|
-| FR-DASH-001 | แสดง BMI ล่าสุดของผู้ใช้ | สูง |
-| FR-DASH-002 | แสดงกราฟ BMI 7 วันล่าสุด | สูง |
-| FR-DASH-003 | แสดงสถิติการเปลี่ยนแปลง BMI | กลาง |
-| FR-DASH-004 | แสดงคำแนะนำตามค่า BMI | กลาง |
+| ID | Requirement | Priority |
+|----|-------------|----------|
+| FR-DASH-001 | Display user's latest BMI | High |
+| FR-DASH-002 | Display BMI graph for the last 7 days | High |
+| FR-DASH-003 | Display BMI change statistics | Medium |
+| FR-DASH-004 | Display advice based on BMI value | Medium |
 
 ---
 
-### 3.2 ข้อกำหนดด้าน Non-Functional
+### 3.2 Non-Functional Requirements
 
-#### 3.2.1 ประสิทธิภาพ (Performance)
+#### 3.2.1 Performance
 
-| ID | ความต้องการ |
-|----|------------|
-| NFR-PERF-001 | หน้าเว็บต้องโหลดภายใน 3 วินาที |
-| NFR-PERF-002 | API Response ต้องไม่เกิน 500ms |
-| NFR-PERF-003 | รองรับผู้ใช้พร้อมกัน 100 คน |
+| ID | Requirement |
+|----|-------------|
+| NFR-PERF-001 | Web pages must load within 3 seconds |
+| NFR-PERF-002 | API Response must not exceed 500ms |
+| NFR-PERF-003 | Support 100 concurrent users |
 
-#### 3.2.2 ความปลอดภัย (Security)
+#### 3.2.2 Security
 
-| ID | ความต้องการ |
-|----|------------|
-| NFR-SEC-001 | Password ต้องเข้ารหัสด้วย bcrypt |
-| NFR-SEC-002 | ใช้ HTTPS สำหรับการสื่อสาร |
-| NFR-SEC-003 | Session ต้องหมดอายุใน 24 ชั่วโมง |
-| NFR-SEC-004 | ป้องกัน SQL Injection และ XSS |
+| ID | Requirement |
+|----|-------------|
+| NFR-SEC-001 | Password must be encrypted with bcrypt |
+| NFR-SEC-002 | Use HTTPS for communication |
+| NFR-SEC-003 | Session must expire in 24 hours |
+| NFR-SEC-004 | Prevent SQL Injection and XSS |
 
-#### 3.2.3 การใช้งาน (Usability)
+#### 3.2.3 Usability
 
-| ID | ความต้องการ |
-|----|------------|
-| NFR-USE-001 | UI ต้อง Responsive รองรับทุกอุปกรณ์ |
-| NFR-USE-002 | รองรับภาษาไทย |
-| NFR-USE-003 | มี Loading State สำหรับทุก Action |
+| ID | Requirement |
+|----|-------------|
+| NFR-USE-001 | UI must be Responsive and support all devices |
+| NFR-USE-002 | Support English Language |
+| NFR-USE-003 | Have Loading State for every Action |
 
 ---
 
@@ -200,55 +200,55 @@ CREATE TABLE BMIRecord (
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/auth/register` | ลงทะเบียนผู้ใช้ใหม่ |
-| POST | `/api/auth/login` | เข้าสู่ระบบ |
-| POST | `/api/auth/logout` | ออกจากระบบ |
-| GET | `/api/auth/session` | ตรวจสอบ Session |
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | Login |
+| POST | `/api/auth/logout` | Logout |
+| GET | `/api/auth/session` | Check Session |
 
 ### 5.2 User APIs
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/users/me` | ดึงข้อมูลผู้ใช้ปัจจุบัน |
-| PUT | `/api/users/me` | อัปเดตข้อมูลผู้ใช้ |
-| PUT | `/api/users/me/password` | เปลี่ยน Password |
+| GET | `/api/users/me` | Get current user profile |
+| PUT | `/api/users/me` | Update user profile |
+| PUT | `/api/users/me/password` | Change Password |
 
 ### 5.3 BMI Record APIs
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/bmi` | ดึงรายการ BMI ทั้งหมด |
-| POST | `/api/bmi` | บันทึก BMI ใหม่ |
-| GET | `/api/bmi/:id` | ดึงข้อมูล BMI by ID |
-| PUT | `/api/bmi/:id` | แก้ไขข้อมูล BMI |
-| DELETE | `/api/bmi/:id` | ลบข้อมูล BMI |
+| GET | `/api/bmi` | Get all BMI records |
+| POST | `/api/bmi` | Record new BMI |
+| GET | `/api/bmi/:id` | Get BMI data by ID |
+| PUT | `/api/bmi/:id` | Edit BMI data |
+| DELETE | `/api/bmi/:id` | Delete BMI data |
 
 ### 5.4 Report APIs
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/reports/daily` | รายงานรายวัน |
-| GET | `/api/reports/weekly` | รายงานรายสัปดาห์ |
-| GET | `/api/reports/monthly` | รายงานรายเดือน |
-| GET | `/api/reports/yearly` | รายงานรายปี |
-| GET | `/api/reports/statistics` | สถิติรวม |
+| GET | `/api/reports/daily` | Daily Report |
+| GET | `/api/reports/weekly` | Weekly Report |
+| GET | `/api/reports/monthly` | Monthly Report |
+| GET | `/api/reports/yearly` | Yearly Report |
+| GET | `/api/reports/statistics` | Overall Statistics |
 
 ---
 
 ## 6. User Interface Design
 
-### 6.1 หน้าหลัก (Pages)
+### 6.1 Pages
 
-| หน้า | URL | คำอธิบาย |
-|-----|-----|---------|
-| Landing | `/` | หน้าแนะนำแอปพลิเคชัน |
-| Login | `/login` | หน้าเข้าสู่ระบบ |
-| Register | `/register` | หน้าลงทะเบียน |
-| Dashboard | `/dashboard` | หน้าหลักหลังล็อกอิน |
-| BMI Calculator | `/bmi` | หน้าบันทึก BMI |
-| History | `/history` | หน้าประวัติ BMI |
-| Reports | `/reports` | หน้ารายงาน MIS |
-| Profile | `/profile` | หน้าโปรไฟล์ผู้ใช้ |
+| Page | URL | Description |
+|-----|-----|-------------|
+| Landing | `/` | Application Introduction Page |
+| Login | `/login` | Login Page |
+| Register | `/register` | Registration Page |
+| Dashboard | `/dashboard` | Main Page after Login |
+| BMI Calculator | `/bmi` | BMI Recording Page |
+| History | `/history` | BMI History Page |
+| Reports | `/reports` | MIS Reports Page |
+| Profile | `/profile` | User Profile Page |
 
 ### 6.2 Design Requirements
 
@@ -271,12 +271,12 @@ CREATE TABLE BMIRecord (
 
 ## 7. BMI Categories
 
-| ค่า BMI | หมวดหมู่ | สี |
-|---------|---------|-----|
-| < 18.5 | น้ำหนักน้อย (Underweight) | 🔵 Blue |
-| 18.5 - 24.9 | ปกติ (Normal) | 🟢 Green |
-| 25.0 - 29.9 | น้ำหนักเกิน (Overweight) | 🟡 Yellow |
-| ≥ 30.0 | อ้วน (Obese) | 🔴 Red |
+| BMI Value | Category | Color |
+|-----------|----------|-------|
+| < 18.5 | Underweight | 🔵 Blue |
+| 18.5 - 24.9 | Normal | 🟢 Green |
+| 25.0 - 29.9 | Overweight | 🟡 Yellow |
+| ≥ 30.0 | Obese | 🔴 Red |
 
 ---
 
@@ -295,23 +295,23 @@ CREATE TABLE BMIRecord (
 ## 9. Acceptance Criteria
 
 ### 9.1 Authentication
-- [ ] ผู้ใช้สามารถลงทะเบียนได้สำเร็จ
-- [ ] ผู้ใช้สามารถ Login ได้สำเร็จ
-- [ ] ผู้ใช้สามารถ Logout ได้สำเร็จ
-- [ ] Session ถูกจัดการอย่างถูกต้อง
+- [ ] Users can register successfully
+- [ ] Users can login successfully
+- [ ] Users can logout successfully
+- [ ] Sessions are managed correctly
 
 ### 9.2 BMI Recording
-- [ ] บันทึก BMI ได้สำเร็จ
-- [ ] คำนวณ BMI ถูกต้อง
-- [ ] แสดงหมวดหมู่ BMI ถูกต้อง
-- [ ] แก้ไข/ลบข้อมูลได้
+- [ ] Can record BMI successfully
+- [ ] BMI is calculated correctly
+- [ ] BMI category is displayed correctly
+- [ ] Can edit/delete data
 
 ### 9.3 Reports
-- [ ] รายงานรายวันแสดงข้อมูลถูกต้อง
-- [ ] รายงานรายสัปดาห์แสดงข้อมูลถูกต้อง
-- [ ] รายงานรายเดือนแสดงข้อมูลถูกต้อง
-- [ ] รายงานรายปีแสดงข้อมูลถูกต้อง
-- [ ] กราฟแสดงผลถูกต้อง
+- [ ] Daily report displays correct data
+- [ ] Weekly report displays correct data
+- [ ] Monthly report displays correct data
+- [ ] Yearly report displays correct data
+- [ ] Graphs display correctly
 
 ---
 
@@ -331,4 +331,4 @@ BMI = weight (kg) / height (m)²
 
 **Document Prepared By:** AI Assistant  
 **Document Approved By:** _________________  
-**Date:** 19 มกราคม 2569
+**Date:** January 19, 2026

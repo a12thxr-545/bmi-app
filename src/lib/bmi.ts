@@ -15,21 +15,21 @@ export function calculateBMI(weight: number, heightCm: number): BMIResult {
     let advice: string;
 
     if (bmi < 18.5) {
-        category = 'น้ำหนักน้อย';
+        category = 'Underweight';
         color = '#3B82F6'; // Blue
-        advice = 'คุณควรเพิ่มน้ำหนักโดยการรับประทานอาหารที่มีคุณค่าทางโภชนาการเพิ่มขึ้น';
+        advice = 'You should increase your weight by eating more nutritious food.';
     } else if (bmi < 25) {
-        category = 'ปกติ';
+        category = 'Normal';
         color = '#22C55E'; // Green
-        advice = 'น้ำหนักของคุณอยู่ในเกณฑ์ปกติ รักษาสุขภาพด้วยการออกกำลังกายสม่ำเสมอ';
+        advice = 'Your weight is normal. Keep it up by exercising regularly.';
     } else if (bmi < 30) {
-        category = 'น้ำหนักเกิน';
+        category = 'Overweight';
         color = '#F59E0B'; // Yellow
-        advice = 'คุณควรลดน้ำหนักโดยการควบคุมอาหารและออกกำลังกายเพิ่มขึ้น';
+        advice = 'You should lose weight by controlling your diet and exercising more.';
     } else {
-        category = 'อ้วน';
+        category = 'Obese';
         color = '#EF4444'; // Red
-        advice = 'คุณควรปรึกษาแพทย์เพื่อวางแผนลดน้ำหนักอย่างปลอดภัย';
+        advice = 'You should consult a doctor to plan for safe weight loss.';
     }
 
     return { bmi: roundedBMI, category, color, advice };
@@ -37,13 +37,13 @@ export function calculateBMI(weight: number, heightCm: number): BMIResult {
 
 export function getCategoryColor(category: string): string {
     switch (category) {
-        case 'น้ำหนักน้อย':
+        case 'Underweight':
             return '#3B82F6';
-        case 'ปกติ':
+        case 'Normal':
             return '#22C55E';
-        case 'น้ำหนักเกิน':
+        case 'Overweight':
             return '#F59E0B';
-        case 'อ้วน':
+        case 'Obese':
             return '#EF4444';
         default:
             return '#6B7280';
