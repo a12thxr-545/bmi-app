@@ -140,7 +140,7 @@ export default function LoginPage() {
                                 borderRadius: '6px',
                                 fontWeight: '600',
                                 color: 'var(--text)'
-                            }}>judy</code>
+                            }}>arthur</code>
                         </div>
                         <div style={{
                             display: 'flex',
